@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-response-reset',
@@ -7,9 +9,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResponseResetComponent implements OnInit {
 
-  constructor() { }
+  public error
+
+  public form = {
+    email: null,
+    password: null,
+    password_confirmation: null,
+    resetToken: null
+  }
+
+  constructor(private auth: AuthService, private route: ActivatedRoute) { 
+    route.queryParams.subscribe(params => {
+      this.form.resetToken = params['token']
+    })
+  }
 
   ngOnInit() {
+  }
+
+  resetPassword(){
+     this.auth.changePassword(this.form);
   }
 
 }

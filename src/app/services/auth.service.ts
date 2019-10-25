@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import {Router} from '@angular/router';
+import { Snotify, SnotifyService } from 'ng-snotify';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class AuthService {
     this.logged.next(value);
   }
 
-  constructor(private http:HttpClient, private router: Router) { }
+  constructor(private http:HttpClient, private router: Router, private notify: SnotifyService) { }
 
 
   signup(data){
@@ -85,5 +86,25 @@ export class AuthService {
 
   loggedIn() {
     return this.isValid(); 
+  }
+
+  logout(){
+    this.changeAuthStatus(false);
+    this.removeToken();
+    this.router.navigateByUrl('/login');
+  }
+
+  resetPassword(data) {
+    return this.http.post(`${this.baseUrl}/resetpassword`,data).subscribe(
+      data => console.log(data),
+      error => this.notify.error(error.error.error)
+    )
+  }
+
+  changePassword(data) {
+    return this.http.post(`${this.baseUrl}/changepassword`,data).subscribe(
+      data => this.router.navigateByUrl('/login'),
+      error => this.notify.error(error.error.error)
+    )
   }
 }

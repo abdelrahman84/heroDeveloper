@@ -5,28 +5,35 @@ import { SignupComponent } from './components/signup/signup.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RequestResetComponent } from './components/password/request-reset/request-reset.component';
 import { ResponseResetComponent } from './components/password/response-reset/response-reset.component';
+import { AuthGuardService } from './guards/auth-guard.service';
+import {SercueInnerPagesService} from './guards/sercue-inner-pages.service';
 
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'signup',
-    component: SignupComponent
+    component: SignupComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
+    canActivate: [SercueInnerPagesService]
   },
   {
     path: 'request-password-reset',
-    component: RequestResetComponent
+    component: RequestResetComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'response-password-reset',
-    component: ResponseResetComponent
+    component: ResponseResetComponent,
+    canActivate: [AuthGuardService]
   }
 ];
 
